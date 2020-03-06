@@ -1,0 +1,95 @@
+/**
+ * Java app converts basic units from SI metric system to an imperial. Written as a part of the first homework.
+ * @author Michał Staruch
+ * @version 1.0
+ *
+ */
+
+package com.company;
+
+import java.util.Scanner; // importowanie biblioteki potrzebnej do wczytywania danych
+
+public class Main{
+
+    static void kg2pound(double digitIn){ //metoda przeliczajaca wage
+        double converted;
+        converted = digitIn*2.20462262;
+        System.out.format("The amount of %.2f kilos is %.2f pounds", digitIn, converted);//zaokraglanie wyniku
+    }
+
+
+    static void c2f(double digitIn){ //metoda przeliczajaca temperature
+        double converted;
+        converted = digitIn*9/5+32;
+        System.out.format("The temperature of %.2f C is %.2f F", digitIn, converted);
+    }
+
+    static void km2mile(double digitIn){ //metoda przeliczajaca predkosc
+        double converted;
+        converted = digitIn*0.621371;
+        System.out.format("The distant of %.2f kilometers is %.2f miles", digitIn, converted);
+    }
+
+    static void dol2pln(double digitIn){ //metoda przeliczajaca walute
+        double converted;
+        converted = digitIn*3.88;
+        System.out.format("The amount of %.2f USD is %.2f PLN", digitIn, converted);
+    }
+
+    static int enterData(int flag){ //metoda wprowadzajaca dane
+        Scanner inputCase = new Scanner(System.in); //stworzenie obiektu
+
+        switch(flag){ //logika menu
+            case 1:
+                System.out.print("Enter kilos: ");
+                break;
+            case 2:
+                System.out.print("Enter amount of dollars: ");
+                break;
+            case 3:
+                System.out.print("Enter celcius temperature: ");
+                break;
+            case 4:
+                System.out.print("Enter kilometers: ");
+                break;
+            default:
+                System.out.print("Enter variant: ");
+                break;
+        }
+        return inputCase.nextInt(); // przypisanie wpisanej wartości
+    }
+
+    static void showMenu(){
+        System.out.println("Welcome to units conventer.\n 1. Weight - kilograms to pounds \n 2. Currency - USD to PLN \n 3. Temperature - celcius to farenheit \n 4. Distance - kilometers to miles \n 5. EXIT");
+        int choice = enterData(0); //przypisanie wyniku metody do zmiennej
+            switch(choice){ //obsluga menu
+                case 1:
+                    double weight = enterData(1); //przypisanie wprowadzonych danych do zmiennej
+                    kg2pound(weight); //przeliczanie wprowadzonych danych
+                    break;
+                case 2:
+                    double currency = enterData(2);
+                    dol2pln(currency);
+                    break;
+                case 3:
+                    double temperature = enterData(3);
+                    c2f(temperature);
+                    break;
+                case 4:
+                    double distance = enterData(4);
+                    km2mile(distance);
+                    break;
+                case 5:
+                    System.out.println("See you soon!");
+                    System.exit(1); // wyjscie z aplikacji
+                default:
+                    System.out.println("Wrong number!"); //zwrocenie bledu obslugi menu
+                    break;
+            }
+    }
+
+    public static void main(String[] args) {
+        showMenu();
+    }
+}
+
