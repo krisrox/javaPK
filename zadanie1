@@ -1,7 +1,7 @@
 /**
  * Java app converts basic units from SI metric system to an imperial. Written as a part of the first homework.
  * @author Michał Staruch
- * @version 1.0
+ * @version 2.0
  *
  */
 
@@ -9,37 +9,34 @@ package com.company;
 
 import java.util.Scanner; // importowanie biblioteki potrzebnej do wczytywania danych
 
+class temperatureConv{
+    public double c2f(double celcius){ //metoda przeliczajaca temperature
+        return celcius*9/5+32;
+    }
+}
+
+class currencyConv{
+    public double dol2pln(double usd){ //metoda przeliczajaca walute
+        return usd*3.88;
+    }
+}
+
+class weightConv{
+    public double kg2pound(double kg){ //metoda przeliczajaca wage
+        return kg*2.20462262;
+    }
+}
+
+class distantConv{
+    public double km2mile(double km){ //metoda przeliczajaca predkosc
+        return km*0.621371;
+    }
+}
+
 public class Main{
-
-    static void kg2pound(double digitIn){ //metoda przeliczajaca wage
-        double converted;
-        converted = digitIn*2.20462262;
-        System.out.format("The amount of %.2f kilos is %.2f pounds", digitIn, converted);//zaokraglanie wyniku
-    }
-
-
-    static void c2f(double digitIn){ //metoda przeliczajaca temperature
-        double converted;
-        converted = digitIn*9/5+32;
-        System.out.format("The temperature of %.2f C is %.2f F", digitIn, converted);
-    }
-
-    static void km2mile(double digitIn){ //metoda przeliczajaca predkosc
-        double converted;
-        converted = digitIn*0.621371;
-        System.out.format("The distant of %.2f kilometers is %.2f miles", digitIn, converted);
-    }
-
-    static void dol2pln(double digitIn){ //metoda przeliczajaca walute
-        double converted;
-        converted = digitIn*3.88;
-        System.out.format("The amount of %.2f USD is %.2f PLN", digitIn, converted);
-    }
-
-    static int enterData(int flag){ //metoda wprowadzajaca dane
+    private static double enterData(int flag){ //metoda wprowadzajaca dane z logika menu
         Scanner inputCase = new Scanner(System.in); //stworzenie obiektu
-
-        switch(flag){ //logika menu
+        switch(flag){
             case 1:
                 System.out.print("Enter kilos: ");
                 break;
@@ -56,28 +53,36 @@ public class Main{
                 System.out.print("Enter variant: ");
                 break;
         }
-        return inputCase.nextInt(); // przypisanie wpisanej wartości
+        return inputCase.nextDouble(); // wypisanie wpisanej wartości
     }
 
-    static void showMenu(){
+    private static void menuShow(){ //metoda wyswietlajaca menu
         System.out.println("Welcome to units conventer.\n 1. Weight - kilograms to pounds \n 2. Currency - USD to PLN \n 3. Temperature - celcius to farenheit \n 4. Distance - kilometers to miles \n 5. EXIT");
-        int choice = enterData(0); //przypisanie wyniku metody do zmiennej
-            switch(choice){ //obsluga menu
+    }
+
+    private static void menu(){
+        menuShow();
+        double choice = enterData(0); //przypisanie wyniku metody do zmiennej
+            switch((int) choice){ //obsluga menu
                 case 1:
-                    double weight = enterData(1); //przypisanie wprowadzonych danych do zmiennej
-                    kg2pound(weight); //przeliczanie wprowadzonych danych
+                    weightConv convW = new weightConv(); //stworzenie obiektu
+                    double kg = enterData(1); //przypisanie wprowadzonych danych do zmiennej
+                    System.out.printf("Pounds: %.2f", convW.kg2pound(kg)); //wypisanie obliczen
                     break;
                 case 2:
-                    double currency = enterData(2);
-                    dol2pln(currency);
+                    currencyConv convC = new currencyConv();
+                    double usd = enterData(2);
+                    System.out.printf("PLN: %.2f zl",convC.dol2pln(usd));
                     break;
                 case 3:
-                    double temperature = enterData(3);
-                    c2f(temperature);
+                    temperatureConv convT = new temperatureConv();
+                    double celcius = enterData(3);
+                    System.out.printf("Farenheit: %.2f F", convT.c2f(celcius));
                     break;
                 case 4:
-                    double distance = enterData(4);
-                    km2mile(distance);
+                    distantConv convD = new distantConv();
+                    double km = enterData(4);
+                    System.out.printf("Kilometers: %.2f km", convD.km2mile(km));
                     break;
                 case 5:
                     System.out.println("See you soon!");
@@ -89,7 +94,6 @@ public class Main{
     }
 
     public static void main(String[] args) {
-        showMenu();
+        menu();
     }
 }
-
