@@ -1,0 +1,170 @@
+/**
+ * Java app converts basic units from SI metric system to an imperial. Written as a part of the first homework.
+ * @author Michał Staruch
+ * @version 2.0
+ * Added possibility write and read from the text file.
+ */
+
+package com.company;
+
+import java.util.Scanner; // Import the Scanner class
+import java.io.File;  // Import the File class
+import java.io.IOException;  // Import the IOException class to handle errors
+import java.io.FileWriter; // Import this class to files handle
+
+class temperatureConv{ // 1 of 4 methods to manage logic of conventer
+    public double c2f(double celcius){ //metoda przeliczajaca temperature
+        return celcius*9/5+32;
+    }
+}
+
+class currencyConv{
+    public double dol2pln(double usd){ //metoda przeliczajaca walute
+        return usd*3.88;
+    }
+}
+
+class weightConv{
+    public double kg2pound(double kg){ //metoda przeliczajaca wage
+        return kg*2.20462262;
+    }
+}
+
+class distantConv{
+    public double km2mile(double km){ //metoda przeliczajaca predkosc
+        return km*0.621371;
+    }
+}
+
+class file{ //The method supports read and write files to/from txt file
+    public static void createFile(){ //The method is using to create txt file
+        try {
+            File item = new File("result.txt");
+            if (item.createNewFile()) {
+                System.out.println("File created: " + item.getName()); //alerts below to inform user what is going on
+            } else {
+                System.out.println("File already exists.");
+            }
+        } catch (IOException e) { //The feature to throw errors using exceptions in every method below
+            System.out.println("An error occurred in created file.");
+            e.printStackTrace();
+        }
+    }
+
+    public static void write2file(double name) {//The method is using to write result to txt file
+        try {
+            FileWriter wroteFile = new FileWriter("result.txt");
+            wroteFile.write(String.valueOf(name));
+            wroteFile.close();
+            System.out.println("Successfully wrote to the file.");
+        } catch (IOException e) {
+            System.out.println("An error occurred in written file.");
+            e.printStackTrace();
+        }
+    }
+
+    public static void readFile(){//The method is using to read result from txt file
+            try {
+                File readableFile = new File("result.txt");
+                Scanner myReader = new Scanner(readableFile);
+                while (myReader.hasNextLine()) { //This feature put date to the screen line by line
+                    String data = myReader.nextLine();
+                    System.out.println(data);
+                }
+                myReader.close();
+            } catch (IOException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+    }
+    public static boolean isExsists(String name) { //The method is using to check whether file exist or not
+        File f = new File(name);
+        return f.exists() && f.isFile();
+    }
+}
+
+public class Main{
+    private static void decisionOfwrite(double name){ //The method is using to ask user
+        System.out.println("Do you like to write the result to file? Y/N");
+        Scanner flagObj = new Scanner(System.in);
+        String flag = flagObj.next();
+        if(flag.equals("y")){ //If user wants to do it as soon as type 'y' as flag.
+            file.createFile();
+            file.write2file(name);
+        }
+    }
+
+    private static double enterData(int flag){ //The method is using to manage to logic of menu using flags
+        Scanner inputCase = new Scanner(System.in);
+        switch(flag){
+            case 1:
+                System.out.print("Enter kilos: ");
+                break;
+            case 2:
+                System.out.print("Enter amount of dollars: ");
+                break;
+            case 3:
+                System.out.print("Enter celcius temperature: ");
+                break;
+            case 4:
+                System.out.print("Enter kilometers: ");
+                break;
+            default:
+                System.out.print("Enter variant: ");
+                break;
+        }
+        return inputCase.nextDouble(); // it's return value of decision
+    }
+
+    private static void menuShow(){ //The method is using to show menu
+        System.out.println("Welcome to units conventer.\n 1. Weight - kilograms to pounds \n 2. Currency - USD to PLN \n 3. Temperature - celcius to farenheit \n 4. Distance - kilometers to miles \n 5. Read the last file \n  6. EXIT ");
+    }
+
+    private static void menu(){
+        menuShow();
+        double choice = enterData(0); //assigning the result to variable
+            switch((int) choice){ //menu operation
+                case 1:
+                    weightConv convW = new weightConv(); //creating the object
+                    double kg = enterData(1); //assigning entered data to a variable
+                    System.out.printf("Pounds: %.2f\n", convW.kg2pound(kg)); //printing calculations
+                    decisionOfwrite(convW.kg2pound(kg)); //printing alert and management of file write
+                    break;
+                case 2:
+                    currencyConv convC = new currencyConv();
+                    double usd = enterData(2);
+                    System.out.printf("PLN: %.2f zl\n",convC.dol2pln(usd));
+                    decisionOfwrite(convC.dol2pln(usd));
+                    break;
+                case 3:
+                    temperatureConv convT = new temperatureConv();
+                    double celcius = enterData(3);
+                    System.out.printf("Farenheit: %.2f F\n", convT.c2f(celcius));
+                    decisionOfwrite(convT.c2f(celcius));
+                    break;
+                case 4:
+                    distantConv convD = new distantConv();
+                    double km = enterData(4);
+                    System.out.printf("Kilometers: %.2f km\n", convD.km2mile(km));
+                    decisionOfwrite(convD.km2mile(km));
+                    break;
+                case 5:
+                    String fileName = "result.txt";
+                    if (file.isExsists(fileName)) {
+                        file.readFile();
+                    }else{
+                        System.out.println("File not found!");
+                    }
+                case 6:
+                    System.out.println("See you soon!");
+                    System.exit(1); // exit app
+                default:
+                    System.out.println("Wrong number!"); //throw the error of the decision
+                    break;
+            }
+    }
+
+    public static void main(String[] args) {
+        menu(); //The method responsible for whole app
+    } 
+}
