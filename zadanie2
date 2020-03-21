@@ -1,4 +1,4 @@
-/**
+/*
  * Java app converts basic units from SI metric system to an imperial. Written as a part of the first homework.
  * @author Michał Staruch
  * @version 2.0
@@ -12,34 +12,34 @@ import java.io.File;  // Import the File class
 import java.io.IOException;  // Import the IOException class to handle errors
 import java.io.FileWriter; // Import this class to files handle
 
-class temperatureConv{ // 1 of 4 methods to manage logic of conventer
-    public double c2f(double celcius){ //metoda przeliczajaca temperature
+class temperatureConv{ // 1 of 4 method to manage logic of converter
+    public double c2f(double celcius){ //The method is used to calculate temperature
         return celcius*9/5+32;
     }
 }
 
 class currencyConv{
-    public double dol2pln(double usd){ //metoda przeliczajaca walute
+    public double dol2pln(double usd){ //The method is used to calculate currency
         return usd*3.88;
     }
 }
 
 class weightConv{
-    public double kg2pound(double kg){ //metoda przeliczajaca wage
+    public double kg2pound(double kg){ //The method is used to calculate weight
         return kg*2.20462262;
     }
 }
 
 class distantConv{
-    public double km2mile(double km){ //metoda przeliczajaca predkosc
+    public double km2mile(double km){ //The method is used to calculate distance
         return km*0.621371;
     }
 }
 
-class file{ //The method supports read and write files to/from txt file
-    public static void createFile(){ //The method is using to create txt file
+class file{ //The class supports read and write files to/from txt file
+    public static void createFile(){ //The method used to create txt file
         try {
-            File item = new File("result.txt");
+            File item = new File("result.txt"); //The file has been created with specific name.
             if (item.createNewFile()) {
                 System.out.println("File created: " + item.getName()); //alerts below to inform user what is going on
             } else {
@@ -47,15 +47,15 @@ class file{ //The method supports read and write files to/from txt file
             }
         } catch (IOException e) { //The feature to throw errors using exceptions in every method below
             System.out.println("An error occurred in created file.");
-            e.printStackTrace();
+            e.printStackTrace(); //very useful tool for diagnosing an exceptions
         }
     }
 
-    public static void write2file(double name) {//The method is using to write result to txt file
+    public static void write2file(double name) {//The method is used to write result to txt file
         try {
-            FileWriter wroteFile = new FileWriter("result.txt");
-            wroteFile.write(String.valueOf(name));
-            wroteFile.close();
+            FileWriter writeFile = new FileWriter("result.txt");
+            writeFile.write(String.valueOf(name));
+            writeFile.close();
             System.out.println("Successfully wrote to the file.");
         } catch (IOException e) {
             System.out.println("An error occurred in written file.");
@@ -63,7 +63,7 @@ class file{ //The method supports read and write files to/from txt file
         }
     }
 
-    public static void readFile(){//The method is using to read result from txt file
+    public static void readFile(){//The method is used to read result from txt file
             try {
                 File readableFile = new File("result.txt");
                 Scanner myReader = new Scanner(readableFile);
@@ -77,24 +77,24 @@ class file{ //The method supports read and write files to/from txt file
                 e.printStackTrace();
             }
     }
-    public static boolean isExsists(String name) { //The method is using to check whether file exist or not
+    public static boolean isExsists(String name) { //The method is used to check whether file exist or not
         File f = new File(name);
         return f.exists() && f.isFile();
     }
 }
 
 public class Main{
-    private static void decisionOfwrite(double name){ //The method is using to ask user
+    private static void decisionOfwrite(double name){ //The method is used to ask user
         System.out.println("Do you like to write the result to file? Y/N");
         Scanner flagObj = new Scanner(System.in);
-        String flag = flagObj.next();
+        String flag = flagObj.next().toLowerCase(); //case validation - the letter size don't matter
         if(flag.equals("y")){ //If user wants to do it as soon as type 'y' as flag.
             file.createFile();
             file.write2file(name);
         }
     }
 
-    private static double enterData(int flag){ //The method is using to manage to logic of menu using flags
+    private static double enterData(int flag){ //The method is used to manage to logic of menu using flags
         Scanner inputCase = new Scanner(System.in);
         switch(flag){
             case 1:
@@ -116,8 +116,8 @@ public class Main{
         return inputCase.nextDouble(); // it's return value of decision
     }
 
-    private static void menuShow(){ //The method is using to show menu
-        System.out.println("Welcome to units conventer.\n 1. Weight - kilograms to pounds \n 2. Currency - USD to PLN \n 3. Temperature - celcius to farenheit \n 4. Distance - kilometers to miles \n 5. Read the last file \n  6. EXIT ");
+    private static void menuShow(){ //The method is used to show menu
+        System.out.println("Welcome to units converter.\n 1. Weight - kilograms to pounds \n 2. Currency - USD to PLN \n 3. Temperature - celcius to fahrenheit \n 4. Distance - kilometers to miles \n 5. Read the last result from file \n 6. EXIT");
     }
 
     private static void menu(){
@@ -139,7 +139,7 @@ public class Main{
                 case 3:
                     temperatureConv convT = new temperatureConv();
                     double celcius = enterData(3);
-                    System.out.printf("Farenheit: %.2f F\n", convT.c2f(celcius));
+                    System.out.printf("Fahrenheit: %.2f F\n", convT.c2f(celcius));
                     decisionOfwrite(convT.c2f(celcius));
                     break;
                 case 4:
@@ -149,8 +149,8 @@ public class Main{
                     decisionOfwrite(convD.km2mile(km));
                     break;
                 case 5:
-                    String fileName = "result.txt";
-                    if (file.isExsists(fileName)) {
+                    String fileName = "result.txt"; //read the last result from written file
+                    if (file.isExsists(fileName)) { //validation of existing file
                         file.readFile();
                     }else{
                         System.out.println("File not found!");
@@ -165,6 +165,6 @@ public class Main{
     }
 
     public static void main(String[] args) {
-        menu(); //The method responsible for whole app
-    } 
+        menu();
+    } //The method responsible for whole app
 }
