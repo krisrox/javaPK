@@ -87,7 +87,7 @@ public class Main{
     private static void decisionOfwrite(double name){ //The method is used to ask user
         System.out.println("Do you like to write the result to file? Y/N");
         Scanner flagObj = new Scanner(System.in);
-        String flag = flagObj.next().toLowerCase(); //case validation - the letter size don't matter
+        String flag = flagObj.next().toLowerCase(); //case validation - the letter size doesn't matter
         if(flag.equals("y")){ //If user wants to do it as soon as type 'y' as flag.
             file.createFile();
             file.write2file(name);
