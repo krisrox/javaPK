@@ -1,0 +1,336 @@
+/**
+ * Java app converts basic units from SI metric system to an imperial. Written as a part of the first homework.
+ * @author Michał Staruch
+ * @version 2.0
+ * Added possibility write and read from the text file.
+ * The app has been reengineered.
+ */
+
+package com.company;
+
+import java.util.InputMismatchException;
+import java.util.Scanner;
+import java.io.File;
+import java.io.IOException;
+import java.io.FileWriter;
+
+/**
+ * The type Converter.
+ */
+public class Converter{
+    private double convertNum;
+    private double convertedNum;
+    /**
+     * The Convert type.
+     */
+    String convertType;
+    /**
+     * The Converted type.
+     */
+    String convertedType;
+
+    /**
+     * Instantiates a new Converter.
+     *
+     * @param convertNum the convert num
+     */
+    public Converter(double convertNum) {
+       this.convertNum = convertNum;
+    }
+
+
+    /**
+     * The method is used to calculate temperature.
+     *
+     * @param num the double
+     * @return the method calculate and round input number
+     */
+    private double c2f(double num){
+        this.convertedNum = num*9/5+32;
+        this.convertType = "celsius";
+        this.convertedType = "fahrenheit";
+
+        System.out.printf("%.2f %s is %.2f %s\n", num, this.convertType,this.convertedNum, this.convertedType);
+        return round(this.convertedNum);
+    }
+    /**
+     * The method is used to calculate currency.
+     *
+     * @param num the double
+     * @return the method calculate and round input number
+     */
+    private double dol2pln(double num){
+        this.convertedNum = num*3.88;
+        this.convertType = "USD";
+        this.convertedType = "PLN";
+
+        System.out.printf("%.2f %s is %.2f %s\n", num, this.convertType,this.convertedNum, this.convertedType);
+        return round(this.convertedNum);
+    }
+    /**
+     * The method is used to calculate weight.
+     *
+     * @param num the double
+     * @return the method calculate and round input number
+     */
+    private double kg2pound(double num){
+
+        this.convertedNum = num*2.20462262;
+        this.convertType = "kg";
+        this.convertedType = "pounds";
+
+        System.out.printf("%.2f %s is %.2f %s\n", num, this.convertType,this.convertedNum, this.convertedType);
+        return round(this.convertedNum);
+    }
+    /**
+     * The method is used to calculate distance.
+     *
+     * @param num the double
+     * @return the method calculate and round input number
+     */
+    private double km2mile(double num){
+        this.convertedNum = num*0.621371;
+        this.convertType = "km";
+        this.convertedType = "mile";
+
+        System.out.printf("%.2f %s is %.2f %s\n", num, this.convertType,this.convertedNum, this.convertedType);
+        return round(this.convertedNum);
+    }
+
+    /**
+     * The method is used to round digits to 2 decimal.
+     *
+     * @param in the double
+     * @return the double rounded number
+     */
+    private double round(double in){ //
+        double rou = in;
+        rou *=100;
+        rou = Math.round(rou);
+        rou /=100;
+        return rou;
+    }
+
+    /**
+     * The method is used to show menu
+     */
+    static void menuShow(){
+        System.out.println("Welcome to units converter.\n 1. Weight - kilograms to pounds \n 2. Currency - USD to PLN \n 3. Temperature - celcius to fahrenheit \n 4. Distance - kilometers to miles \n 5. Read the last result from file \n 6. EXIT");
+    }
+
+    /**
+     * The method is used to manage to logic of menu using flags
+     *
+     * @param flag the flag
+     * @return the int
+     */
+    static int enterData(int flag){
+        Scanner inputCase = new Scanner(System.in);
+        switch(flag){
+            case 1:
+                System.out.print("Enter kilos: ");
+                break;
+            case 2:
+                System.out.print("Enter amount of dollars: ");
+                break;
+            case 3:
+                System.out.print("Enter celsius temperature: ");
+                break;
+            case 4:
+                System.out.print("Enter kilometers: ");
+                break;
+        }
+        return inputCase.nextInt(); // it's return value of decision
+    }
+    /**
+     * The method is used to ask user whether you want to save result to file or not
+     *
+     * @param convertedNum the double
+     * @param convertType the string
+     * @param convertedType the double
+     */
+    private void decisionOfwrite(double convertedNum, String convertType, String convertedType){
+        System.out.println("Do you like to write the result to file? Y/N");
+        Scanner flagObj = new Scanner(System.in);
+        String flag = flagObj.next().toLowerCase(); //case validation - the letter size doesn't matter
+        if(flag.equals("y")){ //If user wants to do it as soon as type 'y' as flag.
+            createFile();
+            write2file(convertedNum, convertType, convertedType);
+        }
+        System.out.println("See you soon!");
+        System.exit(1);
+    }
+    /**
+     * The method is used to link constructor with values
+     *
+     * @param convertNum the double
+     * @param choice the int
+     */
+    private void calculations(double convertNum, int choice){
+        switch(choice){
+            case 1:
+                decisionOfwrite(kg2pound(convertNum), this.convertType, this.convertedType);
+                break;
+            case 2:
+                decisionOfwrite(dol2pln(convertNum), this.convertType, this.convertedType);
+                break;
+            case 3:
+                decisionOfwrite(c2f(convertNum), this.convertType, this.convertedType);
+                break;
+            case 4:
+                decisionOfwrite(km2mile(convertNum), this.convertType, this.convertedType);
+                break;
+        }
+    }
+
+    /**
+     * The method is used to manage to menu.
+     */
+    public static void menu(){
+        menuShow();
+        System.out.print("Enter variant: ");
+        Scanner sc = new Scanner(System.in);
+        int choice = sc.nextInt();
+        switch(choice){
+            case 1:
+                double kg;
+                while(true){
+                    try{
+                        kg = enterData(1);
+                        Converter conWeight = new Converter(kg);
+                        conWeight.calculations(kg, 1);
+                        break;
+                    }catch (InputMismatchException e){
+                        System.out.println("You have written wrong character.");
+                    }
+                }
+                break;
+            case 2:
+                double currency;
+                while(true){
+                    try{
+                        currency = enterData(2);
+                        Converter conCurr = new Converter(currency);
+                        conCurr.calculations(currency, 2);
+                        break;
+                    }catch (InputMismatchException e){
+                        System.out.println("You have written wrong character.");
+                    }
+                }
+                break;
+            case 3:
+                double temp;
+                while(true){
+                    try{
+                        temp = enterData(3);
+                        if(temp<-273){
+                            throw new MyException("the number cannot be smaller than -273!");
+                        }
+                        Converter conTemp = new Converter(temp);
+                        conTemp.calculations(temp, 3);
+                        break;
+                    }catch (MyException|InputMismatchException e){
+                        System.out.println("You have written wrong character or " + e.getMessage());
+                    }
+                }
+                break;
+            case 4:
+                double dist;
+                while(true){
+                    try{
+                        dist = enterData(4);
+                        if(dist<0){
+                            throw new MyException("the number of kilometers cannot be smaller than 0!");
+                        }
+                        Converter conDist = new Converter(dist);
+                        conDist.calculations(dist, 4);
+                        break;
+                    }catch (MyException|InputMismatchException e){
+                        System.out.println("You have written wrong character or " + e.getMessage());
+                    }
+                }
+                break;
+            case 5:
+                String fileName = "result.txt"; //read the last result from written file
+                if (isExists(fileName)) { //validation of existing file
+                    readFile();
+                }else{
+                    System.out.println("File not found!");
+                }
+            case 6:
+                System.out.println("See you soon!");
+                System.exit(1); // exit app
+            default:
+                System.out.println("Wrong number!"); //throw the error of the decision
+                break;
+        }
+    }
+
+    /**
+     * The method is used to create file.
+     */
+    private static void createFile(){ //The method used to create txt file
+        try {
+            File item = new File("result.txt"); //The file has been created with specific name.
+            if (item.createNewFile()) {
+                System.out.println("File created: " + item.getName()); //alerts below to inform user what is going on
+            } else {
+                System.out.println("File already exists in main directory.");
+            }
+        } catch (IOException e) { //The feature to throw errors using exceptions in every method below
+            System.out.println("An error occurred in created file.");
+            e.printStackTrace(); //very useful tool for diagnosing an exceptions
+        }
+    }
+    /**
+     * The method is used to save result to file.
+     *
+     * @param convertedNum the double
+     * @param convertType the string
+     * @param convertedType the string
+     */
+    private void write2file(double convertedNum, String convertType, String convertedType) {
+        try {
+            FileWriter wF = new FileWriter("result.txt");
+            wF.write( convertNum + " " + convertType + " after conversion is " + convertedNum + " " + convertedType);
+            wF.close();
+            System.out.println("Successfully wrote to the file in main directory.");
+        } catch (IOException e) {
+            System.out.println("An error occurred in written file.");
+            e.printStackTrace();
+        }
+    }
+    /**
+     * The method is used to read result from txt file.
+     */
+    private static void readFile(){//
+        try {
+            File readableFile = new File("result.txt");
+            Scanner myReader = new Scanner(readableFile);
+            while (myReader.hasNextLine()) { //This feature put date to the screen line by line
+                String data = myReader.nextLine();
+                System.out.println(data);
+            }
+            myReader.close();
+        } catch (IOException e) {
+            System.out.println("An error occurred.");
+            e.printStackTrace();
+        }
+    }
+    /**
+     * The method is used to check of existing file.
+     */
+    private static boolean isExists(String name) { //The method is used to check whether file exist or not
+        File f = new File(name);
+        return f.exists() && f.isFile();
+    }
+
+    /**
+     * The entry point of application.
+     *
+     * @param args the input arguments
+     */
+    public static void main(String[] args) {
+        menu();
+    }
+}
